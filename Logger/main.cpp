@@ -25,6 +25,7 @@ public:
     virtual void poll()=0;
 };
 
+// O(1)
 long getCurrentTime(){
     std::chrono::milliseconds timespan(1605); // or whatever
     std::this_thread::sleep_for(timespan);
@@ -53,14 +54,17 @@ class LogImplemented:public Log{
     unordered_map<string,long> process_end;
     
 public:
+    // O(logn)
     void start(string processId){
         Process newProcess(processId);
         start_process.push({getCurrentTime(),newProcess.getid()});
         process_end[newProcess.getid()] = -1;
     }
+    // O(1)
     void end(string processId){
         process_end[processId] = getCurrentTime();
     }
+    // O(1)
     void poll(){
         if(start_process.size()==0){
             cout<<"\nNothing to show";
@@ -73,6 +77,7 @@ public:
         }
         
         cout<<"\n{"<<oldestProcess.second<<"}"<<" started at {"<<oldestProcess.first<<"}"<<" and ended at {"<<process_end[oldestProcess.second]<<"}\n";
+        
         start_process.pop();
         process_end.erase(oldestProcess.second);
         return;
