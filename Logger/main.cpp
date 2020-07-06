@@ -64,7 +64,7 @@ public:
     void end(string processId){
         process_end[processId] = getCurrentTime();
     }
-    // O(1)
+    // O(log n)
     void poll(){
         if(start_process.size()==0){
             cout<<"\nNothing to show";
